@@ -15,7 +15,7 @@ class AntiCloneProtection {
         return crypto.createHash('sha256').update(data).digest('hex');
     }
     
-    // Check if domain is whitelisted
+    // Check if domain is whitelisted (now for monitoring only)
     isDomainWhitelisted(host) {
         if (!host) return false;
         
@@ -27,62 +27,58 @@ class AntiCloneProtection {
         });
     }
     
-    // Detect cloning attempts
-    async detectCloning(req) {
+    // Monitor access patterns (no blocking)
+    async monitorAccess(req) {
         const host = req.get('host');
         const referer = req.get('referer');
         const userAgent = req.get('user-agent') || '';
         const ip = req.ip;
         
-        // Check if accessing from non-whitelisted domain
+        // Log access from non-whitelisted domains (monitoring only)
         if (!this.isDomainWhitelisted(host)) {
-            await logSecurityEvent('unauthorized_domain_access', {
+            await logSecurityEvent('external_domain_access', {
                 host,
                 ip,
                 userAgent,
                 referer,
-                url: req.originalUrl
+                url: req.originalUrl,
+                severity: 'info' // Changed to info level
             });
-            
-            return {
-                isClone: true,
-                reason: 'unauthorized_domain',
-                action: 'block'
-            };
         }
         
-        // Check for suspicious referers
+        // Log suspicious referers (monitoring only)
         if (referer && !this.isDomainWhitelisted(new URL(referer).hostname)) {
-            await logSecurityEvent('suspicious_referer', {
+            await logSecurityEvent('external_referer', {
                 host,
                 referer,
                 ip,
-                userAgent
+                userAgent,
+                severity: 'info' // Changed to info level
             });
         }
         
-        // Track request patterns
+        // Track request patterns for analytics
         this.trackRequestPattern(ip, req.originalUrl);
         
-        // Check for scraping patterns
+        // Log potential scraping (monitoring only)
         if (this.isScraping(ip, userAgent)) {
-            await logSecurityEvent('scraping_detected', {
+            await logSecurityEvent('potential_scraping', {
                 ip,
                 userAgent,
-                host
+                host,
+                severity: 'warning' // Just a warning, no blocking
             });
-            
-            return {
-                isClone: true,
-                reason: 'scraping_detected',
-                action: 'block'
-            };
         }
         
-        return { isClone: false };
+        // Always allow access
+        return { 
+            isClone: false, 
+            action: 'allow',
+            monitored: true 
+        };
     }
     
-    // Track request patterns to detect scraping
+    // Track request patterns for analytics
     trackRequestPattern(ip, url) {
         const key = `${ip}:${Date.now()}`;
         const current = this.requestPatterns.get(ip) || [];
@@ -100,58 +96,62 @@ class AntiCloneProtection {
         this.requestPatterns.set(ip, current);
     }
     
-    // Check if IP is scraping
+    // Check if IP shows scraping patterns (for monitoring only)
     isScraping(ip, userAgent) {
         const requests = this.requestPatterns.get(ip) || [];
         const recentRequests = requests.filter(r => 
             Date.now() - r.timestamp < 60000 // Last minute
         );
         
-        // Too many requests in short time
-        if (recentRequests.length > 30) {
+        // High request rate (monitoring threshold)
+        if (recentRequests.length > 50) { // Increased threshold
             return true;
         }
         
-        // Suspicious user agents
+        // Suspicious user agents (for monitoring)
         const suspiciousAgents = [
-            'wget', 'curl', 'scrapy', 'bot', 'crawler', 'spider',
-            'python', 'java', 'go-http', 'node-fetch'
+            'wget', 'curl', 'scrapy', 'spider',
+            'python-requests', 'go-http'
         ];
         
         const lowerUA = userAgent.toLowerCase();
         return suspiciousAgents.some(agent => lowerUA.includes(agent));
     }
     
-    // Generate obfuscated JavaScript for client-side protection
+    // Generate minimal client-side protection (non-intrusive)
     generateClientProtection() {
         const checks = [
-            // Domain check
-            `if(location.hostname !== '${ANTI_CLONE.domainWhitelist[0]}' && location.hostname !== 'localhost') {
-                document.body.innerHTML = '<h1>Unauthorized Access</h1>';
-                return;
-            }`,
+            // Friendly console message
+            `console.log('%cWelcome!', 'color: blue; font-size: 20px; font-weight: bold;');
+            console.log('%cThis site is publicly accessible. Please respect our terms of service.', 'color: blue; font-size: 14px;');`,
             
-            // Console warning
-            `console.warn('%cSTOP!', 'color: red; font-size: 50px; font-weight: bold;');
-            console.warn('%cThis is a browser feature intended for developers. Unauthorized access or cloning is prohibited.', 'color: red; font-size: 16px;');`,
-            
-            // Disable right-click and dev tools (basic protection)
-            `document.addEventListener('contextmenu', e => e.preventDefault());
-            document.addEventListener('keydown', e => {
-                if(e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
-                    e.preventDefault();
-                }
-            });`
+            // Optional: Add site branding
+            `console.log('%cPowered by YourSite', 'color: gray; font-size: 12px;');`
         ];
         
         return checks.join('\n');
     }
     
-    // Start monitoring for cloning attempts
+    // Start monitoring (no blocking actions)
     startMonitoring() {
         setInterval(() => {
             this.cleanupOldPatterns();
+            this.generateAccessReport();
         }, ANTI_CLONE.checkInterval);
+    }
+    
+    // Generate access analytics report
+    generateAccessReport() {
+        const totalIPs = this.requestPatterns.size;
+        const activeIPs = Array.from(this.requestPatterns.entries())
+            .filter(([ip, requests]) => {
+                const recentRequests = requests.filter(r => 
+                    Date.now() - r.timestamp < 300000 // Last 5 minutes
+                );
+                return recentRequests.length > 0;
+            }).length;
+        
+        console.log(`Access Report - Total IPs: ${totalIPs}, Active IPs: ${activeIPs}`);
     }
     
     // Cleanup old request patterns
@@ -169,31 +169,59 @@ class AntiCloneProtection {
         }
     }
     
-    // Middleware for anti-clone protection
+    // Middleware for monitoring (no blocking)
     protectionMiddleware() {
         return async (req, res, next) => {
             try {
-                const result = await this.detectCloning(req);
+                // Monitor access patterns
+                const result = await this.monitorAccess(req);
                 
-                if (result.isClone && result.action === 'block') {
-                    return res.status(403).json({
-                        success: false,
-                        message: 'Access denied',
-                        code: 'CLONE_PROTECTION'
-                    });
-                }
-                
-                // Add protection headers
-                res.setHeader('X-Frame-Options', 'DENY');
+                // Add security headers (good practice)
                 res.setHeader('X-Content-Type-Options', 'nosniff');
                 res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
                 
+                // Optional: Add custom header to identify legitimate responses
+                res.setHeader('X-Site-Access', 'allowed');
+                
+                // Always continue to next middleware
                 next();
             } catch (error) {
-                console.error('Anti-clone protection error:', error);
+                console.error('Access monitoring error:', error);
+                // Continue even if monitoring fails
                 next();
             }
         };
+    }
+    
+    // Get access statistics (useful for analytics)
+    getAccessStats() {
+        const now = Date.now();
+        const stats = {
+            totalIPs: this.requestPatterns.size,
+            last24h: 0,
+            lastHour: 0,
+            topIPs: []
+        };
+        
+        const ipCounts = new Map();
+        
+        for (const [ip, requests] of this.requestPatterns.entries()) {
+            const last24h = requests.filter(r => now - r.timestamp < 86400000);
+            const lastHour = requests.filter(r => now - r.timestamp < 3600000);
+            
+            if (last24h.length > 0) stats.last24h++;
+            if (lastHour.length > 0) stats.lastHour++;
+            
+            ipCounts.set(ip, requests.length);
+        }
+        
+        // Get top 10 most active IPs
+        stats.topIPs = Array.from(ipCounts.entries())
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 10)
+            .map(([ip, count]) => ({ ip, requests: count }));
+        
+        return stats;
     }
 }
 
