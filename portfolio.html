@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Ntando Mods</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="logo.png">
+</head>
+<body>
+    <audio id="bgMusic" loop>
+        <source src="background-music.mp3" type="audio/mpeg">
+    </audio>
+    <button id="musicToggle" class="music-btn">🔊</button>
+
+    <header>
+        <nav>
+            <div class="logo-container">
+                <img src="logo.png" alt="Ntando Mods Logo" class="logo">
+                <span class="logo-text">Ntando Mods</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="portfolio.html" class="active">Portfolio</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <a href="admin.html" class="admin-link" title="Admin Login">⚙️</a>
+        </nav>
+    </header>
+
+    <section class="page-header">
+        <h1>Our Portfolio</h1>
+        <p>Explore our successful projects and satisfied clients</p>
+    </section>
+
+    <section class="portfolio-section">
+        <div class="container">
+            <div class="filter-bar">
+                <button class="filter-btn active" data-filter="all">All Projects</button>
+                <button class="filter-btn" data-filter="webdesign">Web Design</button>
+                <button class="filter-btn" data-filter="hosting">Hosting</button>
+                <button class="filter-btn" data-filter="robotics">Robotics</button>
+                <button class="filter-btn" data-filter="apps">Applications</button>
+            </div>
+
+            <div class="portfolio-grid">
+                <!-- Web Design Projects -->
+                <div class="portfolio-item" data-category="webdesign">
+                    <div class="portfolio-image">🏢</div>
+                    <div class="portfolio-overlay">
+                        <h3>TechCorp Business Website</h3>
+                        <p>Modern corporate website with CMS</p>
+                        <span class="project-tag">Web Design</span>
+                    </div>
+                </div>
+
+                <div class="portfolio-item" data-category="webdesign">
+                    <div class="portfolio-image">🛒</div>
+                    <div class="portfolio-overlay">
+                        <h3>Fashion Store E-commerce</h3>
+                        <p>Full-featured online shopping platform</p>
+                        <span class="project-tag">Web Design</span>
+                    </div>
+                </div>
+
+                <div class="portfolio-item" data-category="webdesign">
+                    <div class="portfolio-image">🍔</div>
+                    <div class="portfolio-overlay">
+                        <h3>Restaurant Website & Ordering</h3>
+                        <p>Responsive site with online ordering system</p>
+                        <span class="project-tag">Web Design</span>
+                    </div>
+                </div>
+
+                <!-- Hosting Projects -->
+                <div class="portfolio-item" data-category="hosting">
+                    <div class="portfolio-image">☁️</div>
+                    <div class="portfolio-overlay">
+                        <h3>Cloud Migration Project</h3>
+                        <p>Enterprise hosting solution for 50+ sites</p>
+                        <span class="project-tag">Hosting</span>
+                    </div>
+                </div>
+
+                <div class="portfolio-item" data-category="hosting">
+                    <div class="portfolio-image">🚀</div>
+                    <div class="portfolio-overlay">
+                        <h3>High-Performance Gaming Server</h3>
+                        <p>Custom dedicated hosting infrastructure</p>
+                        <span class="project-tag">Hosting</span>
+                    </div>
+                </div>
+
+                <!-- Robotics Projects -->
+                <div class="portfolio-item" data-category="robotics">
+                    <div class="portfolio-image">🏭</div>
+                    <div class="portfolio-overlay">
+                        <h3>Manufacturing Automation</h3>
+                        <p>Robotic assembly line implementation</p>
+                        <span class="project-tag">Robotics</span>
+                    </div>
+                </div>
+
+                <div class="portfolio-item" data-category="robotics">
+                    <div class="portfolio-image">🏠</div>
+                    <div class="portfolio-overlay">
+                        <h3>Smart Home System</h3>
+                        <p>IoT-based home automation solution</p>
+                        <span class="project-tag">Robotics</span>
+                    </div>
+                </div>
+
+                <div class="portfolio-item" data-category="robotics">
+                    <div class="portfolio-image">📦</div>
+                    <div class="portfolio-overlay">
+                        <h3>Warehouse Robot System</h3>
+                        <p>Automated inventory management robots</p>
+                        <span class="project-tag">Robotics</span>
+                    </div>
+                </div>
+
+                <!-- App Projects -->
+                <div class="portfolio-item" data-category="apps">
+                    <div class="portfolio-image">📱</div>
+                    <div class="portfolio-overlay">
+                        <h3>Fitness Tracking App</h3>
+                        <p>Cross-platform mobile application</p>
+                        <span class="project-tag">Mobile App</span>
+                    </div>
+                </div>
+
+                <div class="portfolio-item" data-category="apps">
+                    <div class="portfolio-image">💰</div>
+                    <div class="portfolio-overlay">
+                        <h3>Financial Management App</h3>
+                        <p>iOS & Android budget tracking app</p>
+                        <span class="project-tag">Mobile App</span>
+                    </div>
+                </div>
+
+                <div class="portfolio-item" data-category="apps">
+                    <div class="portfolio-image">🎓</div>
+                    <div class="portfolio-overlay">
+                        <h3>E-Learning Platform</h3>
+                        <p>Custom web application for online courses</p>
+                        <span class="project-tag">Web App</span>
+                    </div>
+                </div>
+
+                <div class="portfolio-item" data-category="apps">
+                    <div class="portfolio-image">🚕</div>
+                    <div class="portfolio-overlay">
+                        <h3>Ride Sharing App</h3>
+                        <p>Full-stack transportation solution</p>
+                        <span class="project-tag">Mobile App</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Client Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <h2>What Our Clients Say</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"Ntando Mods transformed our online presence with a stunning website. Their team is professional, responsive, and delivered beyond our expectations!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">👨‍💼</div>
+                        <div class="author-info">
+                            <h4>John Martinez</h4>
+                            <p>CEO, TechCorp Solutions</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"The hosting service is incredibly reliable. We've had zero downtime since switching to Ntando Mods. Their support team is always there when we need them."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">👩‍💻</div>
+                        <div class="author-info">
+                            <h4>Sarah Johnson</h4>
+                            <p>Founder, Fashion Boutique Online</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"The robotics automation system they implemented has increased our productivity by 40%. Exceptional engineering and support throughout the project."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">👨‍🔧</div>
+                        <div class="author-info">
+                            <h4>Michael Chen</h4>
+                            <p>Operations Manager, Manufacturing Inc</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"Our mobile app turned out better than imagined! The UI is intuitive and the performance is flawless. Highly recommend Ntando Mods for app development."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">👩‍💼</div>
+                        <div class="author-info">
+                            <h4>Emily Rodriguez</h4>
+                            <p>Founder, FitLife App</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Start Your Project?</h2>
+            <p>Let's collaborate and bring your vision to life</p>
+            <a href="contact.html" class="btn btn-primary btn-large">Get in Touch</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Ntando Mods</h4>
+                    <p>Your trusted partner for IT solutions, web design, hosting, robotics, and digital innovation.</p>
+                    <p class="footer-contact">📧 info@ntandomods.com<br>📱 +1 (555) 123-4567</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="services.html#webdesign">Web Design</a></li>
+                        <li><a href="services.html#hosting">Web Hosting</a></li>
+                        <li><a href="services.html#domains">Domain Registration</a></li>
+                        <li><a href="services.html#robotics">Robotics</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="portfolio.html">Portfolio</a></li>
+                        <li><a href="pricing.html">Pricing</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="admin.html">Admin</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect With Us</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-icon" title="Facebook">📘</a>
+                        <a href="#" class="social-icon" title="Twitter">🐦</a>
+                        <a href="#" class="social-icon" title="LinkedIn">💼</a>
+                        <a href="#" class="social-icon" title="Instagram">📸</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 Ntando Mods. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+    
